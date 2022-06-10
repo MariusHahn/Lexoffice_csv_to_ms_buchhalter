@@ -26,10 +26,12 @@ def to_ms_buchhalter_csv(df: pandas.DataFrame):
     A["Kostenstelle 1"] = A.apply(lambda x: "", axis=1)
     A["Kostenstelle 2"] = A.apply(lambda x: "", axis=1)
     A["Währung"] = A.apply(lambda x: "", axis=1)
+    A["Buchungstext"] = A["Belegnummer"] + " | " + A["Text"]
+    A["Belegnummer"] = A.apply(lambda x: "", axis=1)
 
     A.drop(["Konto", "Kontobezeichnung", "Datum", "Text", "Gegenkonto", "Soll", "Haben", "Steuer", "Steuerkonto"], axis=1, inplace=True)
     
-    A = A[[ "Belegdatum" , "Buchungsdatum" , "Belegnummernkreis" , "Belegnummer" , "Betrag" , "Sollkonto" , "Habenkonto" , "Steuerschlüssel", "Kostenstelle 1" , "Kostenstelle 2" , "Währung" ]]
+    A = A[[ "Belegdatum" , "Buchungsdatum" , "Belegnummernkreis" , "Belegnummer" , "Buchungstext", "Betrag" , "Sollkonto" , "Habenkonto" , "Steuerschlüssel", "Kostenstelle 1" , "Kostenstelle 2" , "Währung" ]]
 
     A.to_csv("konten_ms_buchhalter.csv", index=False, quoting=csv.QUOTE_ALL,sep=';')
     
@@ -38,7 +40,7 @@ to_ms_buchhalter_csv(A)
 # "Konto";"Kontobezeichnung";"Datum";"Belegnummer";"Text";"Gegenkonto";"Soll";"Haben";"Steuer";"Steuerkonto"
 
 
-# Belegdatum | Buchungsdatum | Belegnummernkreis | Belegnummer | Betrag | Sollkonto | Habenkonto | Steuerschlüssel, Kostenstelle 1 | Kostenstelle 2 | Währung 
+# Belegdatum | Buchungsdatum | Belegnummernkreis | Belegnummer | Buchungstext | Betrag | Sollkonto | Habenkonto | Steuerschlüssel, Kostenstelle 1 | Kostenstelle 2 | Währung 
 
 #print(A.groupby(["Konto", "Gegenkonto"])["Soll"].sum().head(20))
 #print("----------------------------------------------------------")
